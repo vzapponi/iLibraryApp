@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		616C4F7D1D0D694F0089AC2F /* MyNotificationKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 616C4F7C1D0D694F0089AC2F /* MyNotificationKeys.swift */; };
 		616F182F1B91D8880045D095 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 616F182E1B91D8880045D095 /* AppDelegate.swift */; };
 		616F18321B91D8880045D095 /* iLibraryApp.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 616F18301B91D8880045D095 /* iLibraryApp.xcdatamodeld */; };
 		616F18341B91D8880045D095 /* MasterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 616F18331B91D8880045D095 /* MasterViewController.swift */; };
@@ -15,6 +16,8 @@
 		616F183B1B91D8880045D095 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 616F183A1B91D8880045D095 /* Images.xcassets */; };
 		616F183E1B91D8880045D095 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 616F183C1B91D8880045D095 /* LaunchScreen.xib */; };
 		616F184A1B91D8890045D095 /* iLibraryAppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 616F18491B91D8890045D095 /* iLibraryAppTests.swift */; };
+		616F18571B91DADA0045D095 /* Book.swift in Sources */ = {isa = PBXBuildFile; fileRef = 616F18561B91DADA0045D095 /* Book.swift */; };
+		616F18591B91DE790045D095 /* DbController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 616F18581B91DE790045D095 /* DbController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -28,6 +31,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		616C4F7C1D0D694F0089AC2F /* MyNotificationKeys.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyNotificationKeys.swift; sourceTree = "<group>"; };
 		616F18291B91D8880045D095 /* iLibraryApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iLibraryApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		616F182D1B91D8880045D095 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		616F182E1B91D8880045D095 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -40,6 +44,9 @@
 		616F18431B91D8890045D095 /* iLibraryAppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = iLibraryAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		616F18481B91D8890045D095 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		616F18491B91D8890045D095 /* iLibraryAppTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iLibraryAppTests.swift; sourceTree = "<group>"; };
+		616F18561B91DADA0045D095 /* Book.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Book.swift; sourceTree = "<group>"; };
+		616F18581B91DE790045D095 /* DbController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DbController.swift; sourceTree = "<group>"; };
+		61C1337B1B95C31800C00C56 /* iLibraryApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = iLibraryApp.entitlements; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,6 +67,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		616C4F7B1D0D692B0089AC2F /* utils */ = {
+			isa = PBXGroup;
+			children = (
+				616C4F7C1D0D694F0089AC2F /* MyNotificationKeys.swift */,
+			);
+			name = utils;
+			sourceTree = "<group>";
+		};
 		616F18201B91D8880045D095 = {
 			isa = PBXGroup;
 			children = (
@@ -82,9 +97,11 @@
 			isa = PBXGroup;
 			children = (
 				616F182E1B91D8880045D095 /* AppDelegate.swift */,
-				616F18331B91D8880045D095 /* MasterViewController.swift */,
-				616F18351B91D8880045D095 /* DetailViewController.swift */,
-				616F18371B91D8880045D095 /* Main.storyboard */,
+				61C1337B1B95C31800C00C56 /* iLibraryApp.entitlements */,
+				616C4F7B1D0D692B0089AC2F /* utils */,
+				616F18551B91D98F0045D095 /* dataController */,
+				616F18541B91D9700045D095 /* model */,
+				616F18531B91D8E00045D095 /* GUI */,
 				616F183A1B91D8880045D095 /* Images.xcassets */,
 				616F183C1B91D8880045D095 /* LaunchScreen.xib */,
 				616F18301B91D8880045D095 /* iLibraryApp.xcdatamodeld */,
@@ -116,6 +133,32 @@
 				616F18481B91D8890045D095 /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		616F18531B91D8E00045D095 /* GUI */ = {
+			isa = PBXGroup;
+			children = (
+				616F18331B91D8880045D095 /* MasterViewController.swift */,
+				616F18351B91D8880045D095 /* DetailViewController.swift */,
+				616F18371B91D8880045D095 /* Main.storyboard */,
+			);
+			name = GUI;
+			sourceTree = "<group>";
+		};
+		616F18541B91D9700045D095 /* model */ = {
+			isa = PBXGroup;
+			children = (
+				616F18561B91DADA0045D095 /* Book.swift */,
+			);
+			name = model;
+			sourceTree = "<group>";
+		};
+		616F18551B91D98F0045D095 /* dataController */ = {
+			isa = PBXGroup;
+			children = (
+				616F18581B91DE790045D095 /* DbController.swift */,
+			);
+			name = dataController;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -162,11 +205,18 @@
 		616F18211B91D8880045D095 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0640;
+				LastSwiftUpdateCheck = 0700;
+				LastUpgradeCheck = 0700;
 				ORGANIZATIONNAME = "Angelo Vittorio Zapponi";
 				TargetAttributes = {
 					616F18281B91D8880045D095 = {
 						CreatedOnToolsVersion = 6.4;
+						DevelopmentTeam = 7U3NTG5PTH;
+						SystemCapabilities = {
+							com.apple.iCloud = {
+								enabled = 1;
+							};
+						};
 					};
 					616F18421B91D8890045D095 = {
 						CreatedOnToolsVersion = 6.4;
@@ -219,8 +269,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				616F182F1B91D8880045D095 /* AppDelegate.swift in Sources */,
+				616F18591B91DE790045D095 /* DbController.swift in Sources */,
 				616F18321B91D8880045D095 /* iLibraryApp.xcdatamodeld in Sources */,
 				616F18341B91D8880045D095 /* MasterViewController.swift in Sources */,
+				616C4F7D1D0D694F0089AC2F /* MyNotificationKeys.swift in Sources */,
+				616F18571B91DADA0045D095 /* Book.swift in Sources */,
 				616F18361B91D8880045D095 /* DetailViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -284,6 +337,7 @@
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -350,9 +404,15 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = iLibraryApp/iLibraryApp.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = iLibraryApp/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "it.zapponi.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Debug;
 		};
@@ -360,9 +420,15 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = iLibraryApp/iLibraryApp.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = iLibraryApp/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "it.zapponi.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Release;
 		};
@@ -370,16 +436,14 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-				);
+				FRAMEWORK_SEARCH_PATHS = "";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = iLibraryAppTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "it.prismatdi.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/iLibraryApp.app/iLibraryApp";
 			};
@@ -389,12 +453,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-				);
+				FRAMEWORK_SEARCH_PATHS = "";
 				INFOPLIST_FILE = iLibraryAppTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "it.prismatdi.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/iLibraryApp.app/iLibraryApp";
 			};
@@ -419,6 +481,7 @@
 				616F184F1B91D8890045D095 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		616F18501B91D8890045D095 /* Build configuration list for PBXNativeTarget "iLibraryAppTests" */ = {
 			isa = XCConfigurationList;
@@ -427,6 +490,7 @@
 				616F18521B91D8890045D095 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 

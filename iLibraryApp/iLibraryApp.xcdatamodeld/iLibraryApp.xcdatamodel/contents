@@ -1,9 +1,17 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model name="Test1.xcdatamodel" userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="1" systemVersion="11A491" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
-    <entity name="Event">
-        <attribute name="timeStamp" optional="YES" attributeType="Date"/>
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="7701" systemVersion="14F27" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
+    <entity name="Book" representedClassName="Book" syncable="YES">
+        <attribute name="autore" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="barCode" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="collocazione" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="dataCreazione" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="dataModifica" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="dataPrestito" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="prestatoA" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="titolo" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="volumi" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Event" positionX="261" positionY="189" width="128" height="60"/>
+        <element name="Book" positionX="-54" positionY="-9" width="128" height="180"/>
     </elements>
 </model>
