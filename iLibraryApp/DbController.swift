@@ -20,15 +20,22 @@ class DbController: NSObject {
     
     // MARK: metodi per DB
     func clearBooks(){
-        let request = NSFetchRequest(entityName: "Book")
+        var request:NSFetchRequest<Book>
+        if #available(iOS 10.0, *) {
+            request = Book.fetchRequest() as! NSFetchRequest<Book>
+        } else {
+            // Fallback on earlier versions
+            request = NSFetchRequest(entityName: "Book")
+            
+        }
         request.returnsObjectsAsFaults = false
         request.includesPropertyValues = false
         do{
-            let results:NSArray = try context!.executeFetchRequest(request)
+            let results:[Book] = try context!.fetch(request)
             if results.count > 0{
                 for dsp in results{
-                    let myDsp = dsp as! Book
-                    context!.deleteObject(myDsp)
+                    let myDsp = dsp 
+                    context!.delete(myDsp)
                 }
                 try context!.save()
             }
@@ -38,8 +45,8 @@ class DbController: NSObject {
         }
     }
     func getBookVuoto() -> Book{
-        let entLis = NSEntityDescription.entityForName("Book", inManagedObjectContext: context!)
-        let book = Book(entity: entLis!, insertIntoManagedObjectContext: context!)
+        let entLis = NSEntityDescription.entity(forEntityName: "Book", in: context!)
+        let book = Book(entity: entLis!, insertInto: context!)
         book.titolo = ""
         book.autore = ""
         book.collocazione = ""
@@ -52,11 +59,18 @@ class DbController: NSObject {
         return book
     }
     func findAllBooks() -> [Book]{
-        let request = NSFetchRequest(entityName: "Book")
+        var request:NSFetchRequest<Book>
+        if #available(iOS 10.0, *) {
+            request = Book.fetchRequest() as! NSFetchRequest<Book>
+        } else {
+            // Fallback on earlier versions
+            request = NSFetchRequest(entityName: "Book")
+            
+        }
         let sortDesc:Array = [NSSortDescriptor(key: "titolo", ascending: true)]
         request.sortDescriptors = sortDesc
         do{
-            let results:[Book] = try context!.executeFetchRequest(request) as! Array<Book>
+            let results:[Book] = try context!.fetch(request) 
             return results
         }
         catch{
@@ -64,8 +78,8 @@ class DbController: NSObject {
         }
         
     }
-    func removeBook(book: Book){
-        context!.deleteObject(book)
+    func removeBook(_ book: Book){
+        context!.delete(book)
     }
     func saveContext() throws{
         try context.save()

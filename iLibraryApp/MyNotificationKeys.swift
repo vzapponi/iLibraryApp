@@ -7,6 +7,6 @@
 //
 
 import Foundation
-public class MyNotificationKeys : NSObject{
-    public static let addObserver = "add observer"
+open class MyNotificationKeys : NSObject{
+    open static let addObserver = "add observer"
 }

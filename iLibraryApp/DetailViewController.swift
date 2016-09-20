@@ -9,7 +9,7 @@
 import UIKit
 
 class DetailViewController: UIViewController,UITextFieldDelegate {
-    let appDel = UIApplication.sharedApplication().delegate as! AppDelegate
+    let appDel = UIApplication.shared.delegate as! AppDelegate
     
     
     @IBOutlet weak var txtTitolo: UITextField!
@@ -22,7 +22,7 @@ class DetailViewController: UIViewController,UITextFieldDelegate {
     @IBOutlet weak var txtDataPrestito: UITextField!
     @IBOutlet weak var txtBarCode: UITextField!
 
-    let dateForm = NSDateFormatter()
+    let dateForm = DateFormatter()
 
     var newBook = false
     
@@ -50,8 +50,8 @@ class DetailViewController: UIViewController,UITextFieldDelegate {
             reset(UIButton())
             if (newBook){
                 txtVolumi.text = "1"
-                txtDataCreazione?.text = dateForm.stringFromDate(NSDate())
-                txtDataModifica?.text = dateForm.stringFromDate(NSDate())
+                txtDataCreazione?.text = dateForm.string(from: Date())
+                txtDataModifica?.text = dateForm.string(from: Date())
                 
             }
         }
@@ -60,14 +60,14 @@ class DetailViewController: UIViewController,UITextFieldDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-        dateForm.locale = NSLocale.currentLocale()
+        dateForm.locale = Locale.current
         dateForm.dateFormat = "yyyy/MMM/dd HH:mm"
         txtCollocazione.delegate = self
     }
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
     }
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         configureView()
     }
@@ -77,21 +77,21 @@ class DetailViewController: UIViewController,UITextFieldDelegate {
         // Dispose of any resources that can be recreated.
     }
     // MARK: - Actions
-    func textFieldDidEndEditing(textField: UITextField) {
+    func textFieldDidEndEditing(_ textField: UITextField) {
         textField.resignFirstResponder()
     }
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
     }
-    @IBAction func salva(sender: UIButton) {
+    @IBAction func salva(_ sender: UIButton) {
         if (!checkBook()){
-            dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                let alert = UIAlertController(title: "ATTENZIONE", message: "Mancano dati in\nTITOLO,\nAUTORE,\nCOLLOCAZIONE", preferredStyle: UIAlertControllerStyle.Alert)
-                alert.addAction(UIAlertAction(title: "OK", style: .Default, handler: {(action) in
+            DispatchQueue.main.async(execute: { () -> Void in
+                let alert = UIAlertController(title: "ATTENZIONE", message: "Mancano dati in\nTITOLO,\nAUTORE,\nCOLLOCAZIONE", preferredStyle: UIAlertControllerStyle.alert)
+                alert.addAction(UIAlertAction(title: "OK", style: .default, handler: {(action) in
                     
                 }))
-                self.parentViewController?.presentViewController(alert, animated: true, completion: nil)
+                self.parent?.present(alert, animated: true, completion: nil)
             })
         }
         resignFirstResponder()
@@ -108,9 +108,9 @@ class DetailViewController: UIViewController,UITextFieldDelegate {
         }
         self.reset(sender)
 //        appDel.navContoller?.popViewControllerAnimated(true)
-        performSegueWithIdentifier("ritornoAMaster", sender: nil)
+        performSegue(withIdentifier: "ritornoAMaster", sender: nil)
     }
-    @IBAction func reset(sender: UIButton) {
+    @IBAction func reset(_ sender: UIButton) {
         txtTitolo?.text = ""
         txtAutore?.text = ""
         txtVolumi?.text = ""
@@ -122,14 +122,14 @@ class DetailViewController: UIViewController,UITextFieldDelegate {
         txtBarCode?.text = ""
         book = nil
     }
-    @IBAction func deleteBook(sender: UIButton) {
+    @IBAction func deleteBook(_ sender: UIButton) {
         if (book == nil){
             return
         }
-        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+        DispatchQueue.main.async(execute: { () -> Void in
             let message = "Confermi la cancellazione?"
-            let alert = UIAlertController(title: "ATTENZIONE", message: message, preferredStyle: UIAlertControllerStyle.Alert)
-            alert.addAction(UIAlertAction(title: "SI", style: .Default, handler: {(action) in
+            let alert = UIAlertController(title: "ATTENZIONE", message: message, preferredStyle: UIAlertControllerStyle.alert)
+            alert.addAction(UIAlertAction(title: "SI", style: .default, handler: {(action) in
                 self.appDel.dbController.removeBook(self.book!)
                 do{
                     try self.appDel.dbController.saveContext()
@@ -138,12 +138,12 @@ class DetailViewController: UIViewController,UITextFieldDelegate {
                     print(error)
                 }
                 self.reset(sender)
-                self.performSegueWithIdentifier("ritornoAMaster", sender: nil)
+                self.performSegue(withIdentifier: "ritornoAMaster", sender: nil)
             }))
-            alert.addAction(UIAlertAction(title: "NO", style: .Default, handler: {(action) in
+            alert.addAction(UIAlertAction(title: "NO", style: .default, handler: {(action) in
                 
             }))
-            self.presentViewController(alert, animated: true, completion: nil)
+            self.present(alert, animated: true, completion: nil)
         })
     }
     
@@ -155,27 +155,34 @@ class DetailViewController: UIViewController,UITextFieldDelegate {
             return true
         }
     }
-    func saveDati(libro: Book){
+    func saveDati(_ libro: Book){
         libro.titolo = txtTitolo.text!
         libro.autore = txtAutore.text!
-        libro.volumi = Int(txtVolumi.text!)!
+        let nn = Int(txtVolumi.text!)
+        if let myNn = nn{
+            libro.volumi = NSNumber(value: myNn)
+        }
+        else{
+            libro.volumi = 0
+        }
+        
         libro.collocazione = txtCollocazione.text!
         if (libro.dataCreazione.isEmpty){
-            libro.dataCreazione = dateForm.stringFromDate(NSDate())
+            libro.dataCreazione = dateForm.string(from: Date())
         }
-        libro.dataModifica = dateForm.stringFromDate(NSDate())
+        libro.dataModifica = dateForm.string(from: Date())
         if (!txtPrestato.text!.isEmpty){
             // e stato prestato
             if (libro.prestatoA.isEmpty){
                 // nuovo prestito
                 libro.prestatoA = txtPrestato.text!
-                libro.dataPrestito = dateForm.stringFromDate(NSDate())
+                libro.dataPrestito = dateForm.string(from: Date())
             }
             else{
                 // Gia prestato vdiamo se cambio la persona
                 if (txtPrestato.text != libro.prestatoA){
                     libro.prestatoA = txtPrestato.text!
-                    libro.dataPrestito = dateForm.stringFromDate(NSDate())
+                    libro.dataPrestito = dateForm.string(from: Date())
                 }
             }
         }

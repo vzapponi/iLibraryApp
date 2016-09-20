@@ -10,7 +10,7 @@ import UIKit
 import CoreData
 
 class MasterViewController: UITableViewController, UISearchResultsUpdating {
-    let appDel = UIApplication.sharedApplication().delegate as! AppDelegate
+    let appDel = UIApplication.shared.delegate as! AppDelegate
     var detailViewController: DetailViewController? = nil
     var books = [Book]()
     var filtered = [Book]()
@@ -21,7 +21,7 @@ class MasterViewController: UITableViewController, UISearchResultsUpdating {
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        if UIDevice.currentDevice().userInterfaceIdiom == .Pad {
+        if UIDevice.current.userInterfaceIdiom == .pad {
             self.clearsSelectionOnViewWillAppear = false
             self.preferredContentSize = CGSize(width: 320.0, height: 600.0)
         }
@@ -35,7 +35,7 @@ class MasterViewController: UITableViewController, UISearchResultsUpdating {
             controller.searchResultsUpdater = self
             controller.dimsBackgroundDuringPresentation = false
             controller.searchBar.sizeToFit()
-            controller.searchBar.searchBarStyle = UISearchBarStyle.Default
+            controller.searchBar.searchBarStyle = UISearchBarStyle.default
             controller.searchBar.showsScopeBar = false
             controller.searchBar.scopeButtonTitles = ["tit.", "aut.", "coll.", "prest."]
             self.tableView.tableHeaderView = controller.searchBar
@@ -45,28 +45,28 @@ class MasterViewController: UITableViewController, UISearchResultsUpdating {
         })()
         
         
-        self.navigationItem.leftBarButtonItem = self.editButtonItem()
+        self.navigationItem.leftBarButtonItem = self.editButtonItem
         
-        let addButton = UIBarButtonItem(barButtonSystemItem: .Add, target: self, action: #selector(insertNewObject(_:)))
+        let addButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(insertNewObject(_:)))
         self.navigationItem.rightBarButtonItem = addButton
         if let split = self.splitViewController {
             let controllers = split.viewControllers
             self.detailViewController = (controllers[controllers.count-1] as! UINavigationController).topViewController as? DetailViewController
         }
     }
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 //         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(initializeListener), name: MyNotificationKeys.addObserver, object: nil)
     }
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        dispatch_async(dispatch_get_main_queue(), {
+        DispatchQueue.main.async(execute: {
             self.initializeListener()
         })
     }
-    override func viewWillDisappear(animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        NSNotificationCenter.defaultCenter().removeObserver(self)
+        NotificationCenter.default.removeObserver(self)
     }
 
     override func didReceiveMemoryWarning() {
@@ -79,9 +79,9 @@ class MasterViewController: UITableViewController, UISearchResultsUpdating {
             print("HO IL MOC")
             self.moc = mocH
             self.dbController = appDel.dbController
-            NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(self.persisteStoreDidChange), name:NSPersistentStoreCoordinatorStoresDidChangeNotification, object: nil)
-            NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(self.persistenceStoreWillChange(_:)), name: NSPersistentStoreCoordinatorStoresWillChangeNotification, object: moc.persistentStoreCoordinator)
-            NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(self.receiveICloudChanges(_:)), name: NSPersistentStoreDidImportUbiquitousContentChangesNotification, object: moc.persistentStoreCoordinator)
+            NotificationCenter.default.addObserver(self, selector: #selector(self.persisteStoreDidChange), name:NSNotification.Name.NSPersistentStoreCoordinatorStoresDidChange, object: nil)
+            NotificationCenter.default.addObserver(self, selector: #selector(self.persistenceStoreWillChange(_:)), name: NSNotification.Name.NSPersistentStoreCoordinatorStoresWillChange, object: moc.persistentStoreCoordinator)
+            NotificationCenter.default.addObserver(self, selector: #selector(self.receiveICloudChanges(_:)), name: NSNotification.Name.NSPersistentStoreDidImportUbiquitousContentChanges, object: moc.persistentStoreCoordinator)
             
             books = dbController.findAllBooks()
             print("LIBRI N \(books.count)")
@@ -97,10 +97,10 @@ class MasterViewController: UITableViewController, UISearchResultsUpdating {
         }
         
     }
-    func persistenceStoreWillChange(notification: NSNotification){
+    func persistenceStoreWillChange(_ notification: Notification){
         print("persistenceStoreWillChange")
         statusICloud()
-        moc.performBlock{() -> Void in
+        moc.perform{() -> Void in
             if (self.moc.hasChanges){
                 do{
                     try self.dbController.saveContext()
@@ -113,19 +113,19 @@ class MasterViewController: UITableViewController, UISearchResultsUpdating {
             }
         }
     }
-    func receiveICloudChanges(notification: NSNotification){
+    func receiveICloudChanges(_ notification: Notification){
         print("receiveICloudChanges")
-        moc.performBlock({() -> Void in
-            self.moc.mergeChangesFromContextDidSaveNotification(notification)
+        moc.perform({() -> Void in
+            self.moc.mergeChanges(fromContextDidSave: notification)
             self.books = self.dbController.findAllBooks()
             self.tableView.reloadData()
         })
     }
     
     // MARK: - Search bar methods
-    func updateSearchResultsForSearchController(searchController: UISearchController) {
+    func updateSearchResults(for searchController: UISearchController) {
         let idx = searchController.searchBar.selectedScopeButtonIndex
-        filtered.removeAll(keepCapacity: false)
+        filtered.removeAll(keepingCapacity: false)
         var ricerca = ""
         var con = searchController.searchBar.text
         switch idx{
@@ -142,27 +142,27 @@ class MasterViewController: UITableViewController, UISearchResultsUpdating {
             ricerca = "titolo BEGINSWITH[c] %@"
         }
         let searchPredicate = NSPredicate(format: ricerca, con!)
-        let array = (books as NSArray).filteredArrayUsingPredicate(searchPredicate)
+        let array = (books as NSArray).filtered(using: searchPredicate)
         filtered = array as! [Book]
         self.tableView.reloadData()
         
     }
 
     // MARK: - Segues
-    func insertNewObject(sender: AnyObject){
+    func insertNewObject(_ sender: AnyObject){
         selectedBook = nil
-        performSegueWithIdentifier("showDetail", sender: self)
+        performSegue(withIdentifier: "showDetail", sender: self)
     }
 
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "showDetail" {
-            let controller = (segue.destinationViewController as! UINavigationController).topViewController as! DetailViewController
+            let controller = (segue.destination as! UINavigationController).topViewController as! DetailViewController
             controller.book = selectedBook
             if (selectedBook == nil){
                 controller.newBook = true
                 controller.configureView()
             }
-            controller.navigationItem.leftBarButtonItem = self.splitViewController?.displayModeButtonItem()
+            controller.navigationItem.leftBarButtonItem = self.splitViewController?.displayModeButtonItem
             controller.navigationItem.leftItemsSupplementBackButton = true
             
         }
@@ -170,13 +170,13 @@ class MasterViewController: UITableViewController, UISearchResultsUpdating {
 
     // MARK: - Table View
 
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
 
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if let _ = searchController {
-            if (searchController.active){
+            if (searchController.isActive){
                 return filtered.count
             }
             else{
@@ -186,36 +186,36 @@ class MasterViewController: UITableViewController, UISearchResultsUpdating {
         return 0
     }
 
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) 
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) 
         self.configureCell(cell, atIndexPath: indexPath)
         return cell
     }
-    override func tableView(tableView: UITableView, willSelectRowAtIndexPath indexPath: NSIndexPath) -> NSIndexPath? {
-        if (searchController.active){
-            selectedBook = filtered[indexPath.row]
+    override func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
+        if (searchController.isActive){
+            selectedBook = filtered[(indexPath as NSIndexPath).row]
         }
         else{
-            selectedBook = books[indexPath.row]
+            selectedBook = books[(indexPath as NSIndexPath).row]
         }
         return indexPath
     }
 
-    func configureCell(cell: UITableViewCell, atIndexPath indexPath: NSIndexPath) {
+    func configureCell(_ cell: UITableViewCell, atIndexPath indexPath: IndexPath) {
         var book:Book?
-        if searchController.active{
-            book = filtered[indexPath.row]
+        if searchController.isActive{
+            book = filtered[(indexPath as NSIndexPath).row]
         }
         else{
-            book = books[indexPath.row]
+            book = books[(indexPath as NSIndexPath).row]
         }
         
         cell.textLabel?.text = book!.titolo
         cell.detailTextLabel?.text = book!.autore
     }
-    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-        if editingStyle == .Delete {
-            let book = books[indexPath.row]
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            let book = books[(indexPath as NSIndexPath).row]
             dbController.removeBook(book)
             do{
                 try dbController.saveContext()
@@ -313,18 +313,18 @@ class MasterViewController: UITableViewController, UISearchResultsUpdating {
      */
     // MARK: - messages
     func statusICloud(){
-        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+        DispatchQueue.main.async(execute: { () -> Void in
             let message = "ICloud OK!"
-            let alert = UIAlertController(title: "ATTENZIONE", message: message, preferredStyle: UIAlertControllerStyle.Alert)
-            alert.addAction(UIAlertAction(title: "OK", style: .Default, handler: {(action) in
+            let alert = UIAlertController(title: "ATTENZIONE", message: message, preferredStyle: UIAlertControllerStyle.alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: {(action) in
                 
             }))
-            self.presentViewController(alert, animated: true, completion: nil)
+            self.present(alert, animated: true, completion: nil)
         })
         
     }
     // MARK: - ritorno da detail
-    @IBAction func ritornoDaDetail(segue: UIStoryboardSegue){
+    @IBAction func ritornoDaDetail(_ segue: UIStoryboardSegue){
         resignFirstResponder()
         books = dbController.findAllBooks()
         tableView.reloadData()
