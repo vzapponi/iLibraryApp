@@ -10,7 +10,6 @@
 		614B1FBF1F960B5D0089D284 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 614B1FBE1F960B5D0089D284 /* GoogleService-Info.plist */; };
 		616C4F7D1D0D694F0089AC2F /* MyNotificationKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 616C4F7C1D0D694F0089AC2F /* MyNotificationKeys.swift */; };
 		616F182F1B91D8880045D095 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 616F182E1B91D8880045D095 /* AppDelegate.swift */; };
-		616F18321B91D8880045D095 /* iLibraryApp.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 616F18301B91D8880045D095 /* iLibraryApp.xcdatamodeld */; };
 		616F18341B91D8880045D095 /* MasterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 616F18331B91D8880045D095 /* MasterViewController.swift */; };
 		616F18361B91D8880045D095 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 616F18351B91D8880045D095 /* DetailViewController.swift */; };
 		616F18391B91D8880045D095 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 616F18371B91D8880045D095 /* Main.storyboard */; };
@@ -39,7 +38,6 @@
 		616F18291B91D8880045D095 /* iLibraryApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iLibraryApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		616F182D1B91D8880045D095 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		616F182E1B91D8880045D095 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		616F18311B91D8880045D095 /* iLibraryApp.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = iLibraryApp.xcdatamodel; sourceTree = "<group>"; };
 		616F18331B91D8880045D095 /* MasterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MasterViewController.swift; sourceTree = "<group>"; };
 		616F18351B91D8880045D095 /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
 		616F18381B91D8880045D095 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -123,7 +121,6 @@
 				616F18531B91D8E00045D095 /* GUI */,
 				616F183A1B91D8880045D095 /* Images.xcassets */,
 				616F183C1B91D8880045D095 /* LaunchScreen.xib */,
-				616F18301B91D8880045D095 /* iLibraryApp.xcdatamodeld */,
 				616F182C1B91D8880045D095 /* Supporting Files */,
 			);
 			path = iLibraryApp;
@@ -367,7 +364,6 @@
 			files = (
 				616F182F1B91D8880045D095 /* AppDelegate.swift in Sources */,
 				616F18591B91DE790045D095 /* DbController.swift in Sources */,
-				616F18321B91D8880045D095 /* iLibraryApp.xcdatamodeld in Sources */,
 				616F18341B91D8880045D095 /* MasterViewController.swift in Sources */,
 				616C4F7D1D0D694F0089AC2F /* MyNotificationKeys.swift in Sources */,
 				616F18571B91DADA0045D095 /* Book.swift in Sources */,
@@ -615,19 +611,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCVersionGroup section */
-		616F18301B91D8880045D095 /* iLibraryApp.xcdatamodeld */ = {
-			isa = XCVersionGroup;
-			children = (
-				616F18311B91D8880045D095 /* iLibraryApp.xcdatamodel */,
-			);
-			currentVersion = 616F18311B91D8880045D095 /* iLibraryApp.xcdatamodel */;
-			path = iLibraryApp.xcdatamodeld;
-			sourceTree = "<group>";
-			versionGroupType = wrapper.xcdatamodel;
-		};
-/* End XCVersionGroup section */
 	};
 	rootObject = 616F18211B91D8880045D095 /* Project object */;
 }
