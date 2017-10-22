@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		614B1FBF1F960B5D0089D284 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 614B1FBE1F960B5D0089D284 /* GoogleService-Info.plist */; };
 		616C4F7D1D0D694F0089AC2F /* MyNotificationKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 616C4F7C1D0D694F0089AC2F /* MyNotificationKeys.swift */; };
 		616F182F1B91D8880045D095 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 616F182E1B91D8880045D095 /* AppDelegate.swift */; };
 		616F18321B91D8880045D095 /* iLibraryApp.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 616F18301B91D8880045D095 /* iLibraryApp.xcdatamodeld */; };
@@ -33,6 +34,7 @@
 
 /* Begin PBXFileReference section */
 		2C4A5B4F81C84AB0B8FFD9CD /* Pods_iLibraryApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_iLibraryApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		614B1FBE1F960B5D0089D284 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		616C4F7C1D0D694F0089AC2F /* MyNotificationKeys.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyNotificationKeys.swift; sourceTree = "<group>"; };
 		616F18291B91D8880045D095 /* iLibraryApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iLibraryApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		616F182D1B91D8880045D095 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -112,6 +114,7 @@
 		616F182B1B91D8880045D095 /* iLibraryApp */ = {
 			isa = PBXGroup;
 			children = (
+				614B1FBE1F960B5D0089D284 /* GoogleService-Info.plist */,
 				616F182E1B91D8880045D095 /* AppDelegate.swift */,
 				61C1337B1B95C31800C00C56 /* iLibraryApp.entitlements */,
 				616C4F7B1D0D692B0089AC2F /* utils */,
@@ -244,8 +247,11 @@
 							com.apple.ApplicationGroups.iOS = {
 								enabled = 1;
 							};
-							com.apple.iCloud = {
+							com.apple.Push = {
 								enabled = 1;
+							};
+							com.apple.iCloud = {
+								enabled = 0;
 							};
 						};
 					};
@@ -281,6 +287,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				616F18391B91D8880045D095 /* Main.storyboard in Resources */,
+				614B1FBF1F960B5D0089D284 /* GoogleService-Info.plist in Resources */,
 				616F183E1B91D8880045D095 /* LaunchScreen.xib in Resources */,
 				616F183B1B91D8880045D095 /* Images.xcassets in Resources */,
 			);
@@ -319,11 +326,13 @@
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-iLibraryApp/Pods-iLibraryApp-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework",
+				"${BUILT_PRODUCTS_DIR}/leveldb-library/leveldb.framework",
 				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/leveldb.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;

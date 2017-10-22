@@ -8,5 +8,6 @@
 
 import Foundation
 open class MyNotificationKeys : NSObject{
-    open static let addObserver = "add observer"
+    open static let addObserver = "allBooks"
+    open static let updateDati = "updateDati"
 }

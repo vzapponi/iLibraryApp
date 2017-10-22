@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Firebase
 
 class DetailViewController: UIViewController,UITextFieldDelegate {
     let appDel = UIApplication.shared.delegate as! AppDelegate
@@ -23,8 +24,6 @@ class DetailViewController: UIViewController,UITextFieldDelegate {
     @IBOutlet weak var txtBarCode: UITextField!
 
     let dateForm = DateFormatter()
-
-    var newBook = false
     
     
     
@@ -35,25 +34,39 @@ class DetailViewController: UIViewController,UITextFieldDelegate {
 
     func configureView() {
         // Update the user interface for the detail item.
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "dd/MM/yyyy HH:mm"
         if let myBook = book {
             txtTitolo.text = myBook.titolo
             txtAutore.text = myBook.autore
-            txtVolumi.text = myBook.volumi.stringValue
+            txtVolumi.text = myBook.volumi.description
             txtCollocazione.text = myBook.collocazione
-            txtDataCreazione.text = myBook.dataCreazione
-            txtDataModifica.text = myBook.dataModifica
+            if let data = myBook.dCreazione{
+                txtDataCreazione.text = dateFormatter.string(for: data)
+            }
+            else{
+                txtDataCreazione.text = ""
+            }
+            if let data = myBook.dModifica{
+                txtDataModifica.text = dateFormatter.string(for: data)
+            }
+            else{
+                txtPrestato.text = ""
+            }
             txtPrestato.text = myBook.prestatoA
-            txtDataPrestito.text = myBook.dataPrestito
+            if let data = myBook.dPrestito{
+                txtDataPrestito.text = dateFormatter.string(for: data)
+            }
+            else{
+                txtDataPrestito.text = ""
+            }
             txtBarCode.text = myBook.barCode
         }
         else{
             reset(UIButton())
-            if (newBook){
-                txtVolumi.text = "1"
-                txtDataCreazione?.text = dateForm.string(from: Date())
-                txtDataModifica?.text = dateForm.string(from: Date())
-                
-            }
+            txtVolumi.text = "1"
+            txtDataCreazione?.text = dateForm.string(from: Date())
+            txtDataModifica?.text = dateForm.string(from: Date())
         }
         
     }
@@ -61,7 +74,7 @@ class DetailViewController: UIViewController,UITextFieldDelegate {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         dateForm.locale = Locale.current
-        dateForm.dateFormat = "yyyy/MMM/dd HH:mm"
+        dateForm.dateFormat = "dd/MM/yyyy HH:mm"
         txtCollocazione.delegate = self
     }
     override func viewWillAppear(_ animated: Bool) {
@@ -93,19 +106,13 @@ class DetailViewController: UIViewController,UITextFieldDelegate {
                 }))
                 self.parent?.present(alert, animated: true, completion: nil)
             })
+            return
         }
         resignFirstResponder()
         if (book == nil){
-            book = appDel.dbController.getBookVuoto()
-            newBook = false
+            book = Book()
         }
         saveDati(book!)
-        do{
-            try appDel.dbController.saveContext()
-        }
-        catch{
-            print(error)
-        }
         self.reset(sender)
 //        appDel.navContoller?.popViewControllerAnimated(true)
         performSegue(withIdentifier: "ritornoAMaster", sender: nil)
@@ -130,13 +137,15 @@ class DetailViewController: UIViewController,UITextFieldDelegate {
             let message = "Confermi la cancellazione?"
             let alert = UIAlertController(title: "ATTENZIONE", message: message, preferredStyle: UIAlertControllerStyle.alert)
             alert.addAction(UIAlertAction(title: "SI", style: .default, handler: {(action) in
-                self.appDel.dbController.removeBook(self.book!)
-                do{
-                    try self.appDel.dbController.saveContext()
-                }
-                catch{
-                    print(error)
-                }
+                let ref = self.appDel.dbController.dataBase!.child("books").child((self.book!.id!))
+                ref.removeValue(completionBlock: { (error, refer) in
+                    if error != nil {
+                        print(error!)
+                    } else {
+                        print(refer)
+                        print("Child Removed Correctly")
+                    }
+                })
                 self.reset(sender)
                 self.performSegue(withIdentifier: "ritornoAMaster", sender: nil)
             }))
@@ -160,33 +169,46 @@ class DetailViewController: UIViewController,UITextFieldDelegate {
         libro.autore = txtAutore.text!
         let nn = Int(txtVolumi.text!)
         if let myNn = nn{
-            libro.volumi = NSNumber(value: myNn)
+            libro.volumi = Int(myNn)
         }
         else{
             libro.volumi = 0
         }
         
         libro.collocazione = txtCollocazione.text!
-        if (libro.dataCreazione.isEmpty){
-            libro.dataCreazione = dateForm.string(from: Date())
+        if (libro.dataCreazione == 0.0){
+            libro.dCreazione = Date()
         }
-        libro.dataModifica = dateForm.string(from: Date())
+        libro.dataModifica = Date().timeIntervalSince1970 * 1000
         if (!txtPrestato.text!.isEmpty){
             // e stato prestato
             if (libro.prestatoA.isEmpty){
                 // nuovo prestito
                 libro.prestatoA = txtPrestato.text!
-                libro.dataPrestito = dateForm.string(from: Date())
+                libro.dPrestito = dateForm.date(from: txtDataPrestito.text!)
+                libro.dataPrestito = (libro.dPrestito?.timeIntervalSince1970)! * 1000
             }
             else{
                 // Gia prestato vdiamo se cambio la persona
                 if (txtPrestato.text != libro.prestatoA){
                     libro.prestatoA = txtPrestato.text!
-                    libro.dataPrestito = dateForm.string(from: Date())
+                    libro.dPrestito = dateForm.date(from: txtDataPrestito.text!)
                 }
             }
         }
         libro.barCode = txtBarCode.text!
+        if let myId = libro.id{
+            // modifica
+            appDel.dbController.dataBase?.child("books").child(myId).updateChildValues(libro.getValori())
+        }
+        else{
+            // Inserimento nuovo book
+            let ref:DatabaseReference = appDel.dbController.dataBase!.child("books")
+            let key:String = ref.childByAutoId().key
+            libro.id = key
+            appDel.dbController.dataBase!.child("books").child(key).setValue(libro.getValori())
+        }
+        
     }
 
 

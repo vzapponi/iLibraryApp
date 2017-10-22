@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreData
+import Firebase
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDelegate {
@@ -28,8 +29,31 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
         let masterNavigationController = splitViewController.viewControllers[0] as! UINavigationController
 //        let controller = masterNavigationController.topViewController as! MasterViewController
         navContoller = masterNavigationController
-        self.dbController.context = managedObjectContext
-        
+//        self.dbController.context = managedObjectContext
+        FirebaseApp.configure()
+        Database.database().isPersistenceEnabled = true
+        var ref: DatabaseReference!
+        ref = Database.database().reference()
+        ref.keepSynced(true)
+        ref.child("books").observe(.value){(snapshot) in
+            
+            var all:[Book] = []
+            for child in snapshot.children{
+                let snap = child as! DataSnapshot
+                //                let key = snap.key
+                let value = snap.value
+                //               print("dati \(key) kiave \(value) libro")
+                let book = Book()
+                book.setValori(values: value as! Dictionary<String, Any>)
+                //                print(book.toString())
+                all.append(book)
+            }
+            all = all.sorted(by: { $0.titolo < $1.titolo })
+            print("IN OBSERVE \(all.count)")
+            NotificationCenter.default.post(name:Notification.Name(rawValue: MyNotificationKeys.updateDati), object: self, userInfo:["dati":all])
+        }
+        dbController.dataBase = ref
+        application.registerForRemoteNotifications()
         return true
     }
 
@@ -54,17 +78,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
 
     func applicationDidBecomeActive(_ application: UIApplication) {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+//        dbController.findAllBooks()
     }
 
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
         // Saves changes in the application's managed object context before the application terminates.
-        do{
-            try dbController.saveContext()
-        }
-        catch{
-            print(error)
-        }
+//        do{
+//            try dbController.saveContext()
+//        }
+//        catch{
+//            print(error)
+//        }
     }
 
     // MARK: - Split view
@@ -82,7 +107,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
     }
     // MARK: - Core Data stack
     
-    
+    /*
     lazy var managedObjectModel: NSManagedObjectModel = {
         // The managed object model for the application. This property is not optional. It is a fatal error for the application not to be able to find and load its model.
         let modelURL = Bundle.main.url(forResource: "iLibraryApp", withExtension: "momd")!
@@ -130,6 +155,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
         managedObjectContext.persistentStoreCoordinator = coordinator
         return managedObjectContext
     }()
-
+*/
 }
 
