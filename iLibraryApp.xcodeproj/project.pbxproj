@@ -17,7 +17,6 @@
 		616F183E1B91D8880045D095 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 616F183C1B91D8880045D095 /* LaunchScreen.xib */; };
 		616F184A1B91D8890045D095 /* iLibraryAppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 616F18491B91D8890045D095 /* iLibraryAppTests.swift */; };
 		616F18571B91DADA0045D095 /* Book.swift in Sources */ = {isa = PBXBuildFile; fileRef = 616F18561B91DADA0045D095 /* Book.swift */; };
-		616F18591B91DE790045D095 /* DbController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 616F18581B91DE790045D095 /* DbController.swift */; };
 		D2AF96C26EA0BCDD020F3040 /* Pods_iLibraryApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C4A5B4F81C84AB0B8FFD9CD /* Pods_iLibraryApp.framework */; };
 /* End PBXBuildFile section */
 
@@ -47,7 +46,6 @@
 		616F18481B91D8890045D095 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		616F18491B91D8890045D095 /* iLibraryAppTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iLibraryAppTests.swift; sourceTree = "<group>"; };
 		616F18561B91DADA0045D095 /* Book.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Book.swift; sourceTree = "<group>"; };
-		616F18581B91DE790045D095 /* DbController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DbController.swift; sourceTree = "<group>"; };
 		61C1337B1B95C31800C00C56 /* iLibraryApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = iLibraryApp.entitlements; sourceTree = "<group>"; };
 		82BB532330F3602C13AB287F /* Pods-iLibraryApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iLibraryApp.release.xcconfig"; path = "Pods/Target Support Files/Pods-iLibraryApp/Pods-iLibraryApp.release.xcconfig"; sourceTree = "<group>"; };
 		9DDA944D2D00480E5D92FBFC /* Pods-iLibraryApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iLibraryApp.debug.xcconfig"; path = "Pods/Target Support Files/Pods-iLibraryApp/Pods-iLibraryApp.debug.xcconfig"; sourceTree = "<group>"; };
@@ -116,7 +114,6 @@
 				616F182E1B91D8880045D095 /* AppDelegate.swift */,
 				61C1337B1B95C31800C00C56 /* iLibraryApp.entitlements */,
 				616C4F7B1D0D692B0089AC2F /* utils */,
-				616F18551B91D98F0045D095 /* dataController */,
 				616F18541B91D9700045D095 /* model */,
 				616F18531B91D8E00045D095 /* GUI */,
 				616F183A1B91D8880045D095 /* Images.xcassets */,
@@ -167,14 +164,6 @@
 				616F18561B91DADA0045D095 /* Book.swift */,
 			);
 			name = model;
-			sourceTree = "<group>";
-		};
-		616F18551B91D98F0045D095 /* dataController */ = {
-			isa = PBXGroup;
-			children = (
-				616F18581B91DE790045D095 /* DbController.swift */,
-			);
-			name = dataController;
 			sourceTree = "<group>";
 		};
 		FA9802EFEEB6E495E4A35269 /* Frameworks */ = {
@@ -363,7 +352,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				616F182F1B91D8880045D095 /* AppDelegate.swift in Sources */,
-				616F18591B91DE790045D095 /* DbController.swift in Sources */,
 				616F18341B91D8880045D095 /* MasterViewController.swift in Sources */,
 				616C4F7D1D0D694F0089AC2F /* MyNotificationKeys.swift in Sources */,
 				616F18571B91DADA0045D095 /* Book.swift in Sources */,

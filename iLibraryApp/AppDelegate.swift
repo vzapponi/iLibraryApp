@@ -14,7 +14,6 @@ import Firebase
 class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDelegate {
 
     var window: UIWindow?
-    var dbController:DbController = DbController()
     var navContoller:UINavigationController?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
@@ -52,7 +51,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
             print("IN OBSERVE \(all.count)")
             NotificationCenter.default.post(name:Notification.Name(rawValue: MyNotificationKeys.updateDati), object: self, userInfo:["dati":all])
         }
-        dbController.dataBase = ref
         application.registerForRemoteNotifications()
         return true
     }
