@@ -137,7 +137,7 @@ class DetailViewController: UIViewController,UITextFieldDelegate {
             let message = "Confermi la cancellazione?"
             let alert = UIAlertController(title: "ATTENZIONE", message: message, preferredStyle: UIAlertControllerStyle.alert)
             alert.addAction(UIAlertAction(title: "SI", style: .default, handler: {(action) in
-                let ref = self.appDel.dbController.dataBase!.child("books").child((self.book!.id!))
+                let ref = self.appDel.database!.child("books").child((self.book!.id!))
                 ref.removeValue(completionBlock: { (error, refer) in
                     if error != nil {
                         print(error!)
@@ -199,14 +199,14 @@ class DetailViewController: UIViewController,UITextFieldDelegate {
         libro.barCode = txtBarCode.text!
         if let myId = libro.id{
             // modifica
-            appDel.dbController.dataBase?.child("books").child(myId).updateChildValues(libro.getValori())
+            appDel.database!.child("books").child(myId).updateChildValues(libro.getValori())
         }
         else{
             // Inserimento nuovo book
-            let ref:DatabaseReference = appDel.dbController.dataBase!.child("books")
+            let ref:DatabaseReference = appDel.database!.child("books")
             let key:String = ref.childByAutoId().key
             libro.id = key
-            appDel.dbController.dataBase!.child("books").child(key).setValue(libro.getValori())
+            appDel.database!.child("books").child(key).setValue(libro.getValori())
         }
         
     }

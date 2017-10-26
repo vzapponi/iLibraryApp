@@ -17,7 +17,6 @@ class MasterViewController: UITableViewController, UISearchResultsUpdating {
     var searchController = UISearchController(searchResultsController: nil)
     var selectedBook: Book?
     var moc:NSManagedObjectContext!
-    var dbController:DbController!
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -191,14 +190,15 @@ class MasterViewController: UITableViewController, UISearchResultsUpdating {
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             let book = books[(indexPath as NSIndexPath).row]
-            dbController.removeBook(book)
-            do{
-                try dbController.saveContext()
-            }
-            catch{
-                print(error)
-                return
-            }
+            let ref = self.appDel.database!.child("books").child((book.id!))
+            ref.removeValue(completionBlock: { (error, refer) in
+                if error != nil {
+                    print(error!)
+                } else {
+                    print(refer)
+                    print("Child Removed Correctly")
+                }
+            })
 //            dbController.findAllBooks()
             tableView.reloadData()
         }

@@ -15,6 +15,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
 
     var window: UIWindow?
     var navContoller:UINavigationController?
+    var database:DatabaseReference?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
@@ -31,10 +32,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
 //        self.dbController.context = managedObjectContext
         FirebaseApp.configure()
         Database.database().isPersistenceEnabled = true
-        var ref: DatabaseReference!
-        ref = Database.database().reference()
-        ref.keepSynced(true)
-        ref.child("books").observe(.value){(snapshot) in
+        database = Database.database().reference()
+        database!.keepSynced(true)
+        database!.child("books").observe(.value){(snapshot) in
             
             var all:[Book] = []
             for child in snapshot.children{
