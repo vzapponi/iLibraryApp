@@ -30,12 +30,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
 //        let controller = masterNavigationController.topViewController as! MasterViewController
         navContoller = masterNavigationController
 //        self.dbController.context = managedObjectContext
+        
         FirebaseApp.configure()
         Database.database().isPersistenceEnabled = true
         database = Database.database().reference()
         database!.keepSynced(true)
         database!.child("books").observe(.value){(snapshot) in
-            
+//            let encoder = JSONEncoder.init()
             var all:[Book] = []
             for child in snapshot.children{
                 let snap = child as! DataSnapshot
@@ -44,7 +45,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
                 //               print("dati \(key) kiave \(value) libro")
                 let book = Book()
                 book.setValori(values: value as! Dictionary<String, Any>)
-                //                print(book.toString())
+//                do{
+//                    let data = try encoder.encode(book)
+//
+//                    if let json = String.init(data: data, encoding: .utf8) {
+//                        print(json)
+//                    }
+//                }
+//                catch let error {
+//                    print("errore nella codifica dei dati", error)
+//                }
                 all.append(book)
             }
             all = all.sorted(by: { $0.titolo < $1.titolo })

@@ -7,10 +7,9 @@
 //
 
 import Foundation
-import CoreData
 
 
-class Book: NSObject {
+class Book: Codable {
 
     var titolo: String = ""
     var autore: String = ""
