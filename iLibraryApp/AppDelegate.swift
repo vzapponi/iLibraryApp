@@ -27,10 +27,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
         splitViewController.delegate = self
 
         let masterNavigationController = splitViewController.viewControllers[0] as! UINavigationController
-//        let controller = masterNavigationController.topViewController as! MasterViewController
         navContoller = masterNavigationController
-//        self.dbController.context = managedObjectContext
-        
         FirebaseApp.configure()
         Database.database().isPersistenceEnabled = true
         database = Database.database().reference()

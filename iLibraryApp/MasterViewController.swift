@@ -34,10 +34,10 @@ class MasterViewController: UITableViewController, UISearchResultsUpdating {
         NotificationCenter.default.addObserver(self, selector: #selector(showData(_:)), name: Notification.Name(rawValue:MyNotificationKeys.addObserver), object: nil)
         self.searchController = ({
             searchController.searchResultsUpdater = self
-            searchController.dimsBackgroundDuringPresentation = false
+            searchController.obscuresBackgroundDuringPresentation = false
             searchController.searchBar.sizeToFit()
             searchController.searchBar.searchBarStyle = UISearchBarStyle.default
-            searchController.searchBar.showsScopeBar = false
+            searchController.searchBar.showsScopeBar = true
             searchController.searchBar.scopeButtonTitles = ["titolo", "autore", "collocaz.", "prestato"]
             self.tableView.tableHeaderView = searchController.searchBar
             self.definesPresentationContext = true
@@ -46,7 +46,6 @@ class MasterViewController: UITableViewController, UISearchResultsUpdating {
         
         
         self.navigationItem.leftBarButtonItem = self.editButtonItem
-        
         let addButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(insertNewObject(_:)))
         self.navigationItem.rightBarButtonItem = addButton
         if let split = self.splitViewController {
@@ -89,39 +88,36 @@ class MasterViewController: UITableViewController, UISearchResultsUpdating {
         return searchController.searchBar.text?.isEmpty ?? true
     }
     func updateSearchResults(for searchController: UISearchController) {
-        print("updateSearchResults")
         let idx = searchController.searchBar.selectedScopeButtonIndex
         filtered.removeAll(keepingCapacity: false)
         let con = searchController.searchBar.text?.lowercased()
         switch idx{
         case 0:
+            // TITOLO
             if let myCon = con{
-                filtered = books.filter{(book) in (book).titolo.lowercased().starts(with: myCon)}
+                filtered = books.filter{(book:Book)-> Bool in return book.titolo.lowercased().starts(with: myCon)}
             }
-//            ricerca = "titolo BEGINSWITH[c] %@"
         case 1:
+            // AUTORE
             if let myCon = con{
-                filtered = books.filter{(book) in (book).autore.lowercased().starts(with: myCon)}
+                filtered = books.filter{(book:Book)-> Bool in return book.autore.lowercased().contains(myCon)}
             }
-//            ricerca = "autore BEGINSWITH[c] %@"
         case 2:
+            // COLLOCAZIONE
             if let myCon = con{
-                filtered = books.filter{(book) in (book).collocazione.lowercased().starts(with: myCon)}
+                filtered = books.filter{(book:Book)-> Bool in return book.collocazione.lowercased().starts(with: myCon)}
             }
-//            ricerca = "collocazione BEGINSWITH[c] %@"
         case 3:
+            // PRESTATO
             if let myCon = con{
-                filtered = books.filter{(book) in (book).prestatoA.lowercased().starts(with: myCon)}
+                filtered = books.filter{(book:Book)-> Bool in return book.prestatoA.lowercased().starts(with: myCon)}
             }
-//            ricerca = "prestatoA != %@"
         default:
+            // DEFAULT TITOLO
             if let myCon = con{
-                filtered = books.filter{(book) in (book).titolo.lowercased().starts(with: myCon)}
+                filtered = books.filter{(book:Book)-> Bool in return book.titolo.lowercased().starts(with: myCon)}
             }
-//            ricerca = "titolo BEGINSWITH[c] %@"
         }
-//
-//        filtered = array as! [Book]
         self.tableView.reloadData()
         
     }
